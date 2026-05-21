@@ -14,7 +14,7 @@
               object-fit: cover;
             "
           />
-          Onenantsoa
+          RANAIVO Andry Ny Avo Onenantsoa
         </q-toolbar-title>
 
         <q-space />

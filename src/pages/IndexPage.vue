@@ -26,7 +26,7 @@
             object-fit: cover;
           "
         />
-        <h1 class="text-h2 q-mb-md">Ntsoa Ranaivo</h1>
+        <h1 class="text-h2 q-mb-md">Ranaivo Andry Ny Avo Onenantsoa</h1>
         <p class="text-h5 q-mb-lg">Développeur Full Stack Junior spécialisé en Vue.js et Node.js</p>
         <div class="q-gutter-md">
           <q-btn color="primary" label="Voir mes projets" @click="scrollToSection('projects')" />
