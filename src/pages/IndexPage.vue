@@ -339,15 +339,7 @@
           <div class="text-center q-mb-lg">
             <q-icon name="location_on" size="lg" class="q-mr-md" />
             <p><strong>Antananarivo, Madagascar</strong></p>
-            <q-separator class="q-my-md" />
-            <p>
-              <q-icon name="email" /> Email:
-              <a href="mailto:ranaivoonenantsoa@gmail.com">ranaivoonenantsoa@gmail.com</a>
-            </p>
-            <p>
-              <q-icon name="phone" /> Téléphone:
-              <a href="tel:+26134086544">+261 34 08 654 48</a>
-            </p>
+
             <q-separator class="q-my-md" />
             <p>
               <q-icon name="fab fa-github" /> GitHub:
