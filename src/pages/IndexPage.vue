@@ -97,19 +97,19 @@
                   <div class="text-h6 q-mb-md text-center">Frontend</div>
                   <div class="q-mb-sm">
                     <div>Vue.js</div>
-                    <q-linear-progress value="0.8" color="primary" />
+                    <q-linear-progress :value="0.8" color="primary" />
                   </div>
                   <div class="q-mb-sm">
                     <div>Quasar</div>
-                    <q-linear-progress value="0.7" color="primary" />
+                    <q-linear-progress :value="0.7" color="primary" />
                   </div>
                   <div class="q-mb-sm">
                     <div>React Native</div>
-                    <q-linear-progress value="0.6" color="primary" />
+                    <q-linear-progress :value="0.6" color="primary" />
                   </div>
                   <div class="q-mb-sm">
                     <div>HTML/CSS</div>
-                    <q-linear-progress value="0.9" color="primary" />
+                    <q-linear-progress :value="0.9" color="primary" />
                   </div>
                 </q-card-section>
               </q-card>
@@ -120,11 +120,11 @@
                   <div class="text-h6 q-mb-md text-center">Backend</div>
                   <div class="q-mb-sm">
                     <div>Node.js</div>
-                    <q-linear-progress value="0.8" color="secondary" />
+                    <q-linear-progress :value="0.8" color="secondary" />
                   </div>
                   <div class="q-mb-sm">
                     <div>Express</div>
-                    <q-linear-progress value="0.7" color="secondary" />
+                    <q-linear-progress :value="0.7" color="secondary" />
                   </div>
                 </q-card-section>
               </q-card>
@@ -135,11 +135,11 @@
                   <div class="text-h6 q-mb-md text-center">Base de données</div>
                   <div class="q-mb-sm">
                     <div>PostgreSQL</div>
-                    <q-linear-progress value="0.7" color="accent" />
+                    <q-linear-progress :value="0.7" color="accent" />
                   </div>
                   <div class="q-mb-sm">
                     <div>MongoDB</div>
-                    <q-linear-progress value="0.6" color="accent" />
+                    <q-linear-progress :value="0.6" color="accent" />
                   </div>
                 </q-card-section>
               </q-card>
@@ -150,16 +150,16 @@
                   <div class="text-h6 q-mb-md text-center">Outils</div>
                   <div class="q-mb-sm">
                     <div>Git</div>
-                    <q-linear-progress value="0.8" color="positive" />
+                    <q-linear-progress :value="0.8" color="positive" />
                   </div>
                   <div class="q-mb-sm">
                     <div>GitHub</div>
-                    <q-linear-progress value="0.8" color="positive" />
+                    <q-linear-progress :value="0.8" color="positive" />
                   </div>
 
                   <div class="q-mb-sm">
                     <div>Linux Ubuntu</div>
-                    <q-linear-progress value="0.7" color="positive" />
+                    <q-linear-progress :value="0.7" color="positive" />
                   </div>
                 </q-card-section>
               </q-card>
@@ -234,7 +234,7 @@
               <q-card class="bg-grey-8">
                 <q-card-section>
                   <div class="text-h6 q-mb-md">🇲🇬 Malagasy</div>
-                  <q-linear-progress value="1" color="positive" size="15px" />
+                  <q-linear-progress :value="1" color="positive" size="15px" />
                   <p class="text-caption q-mt-sm">Langue maternelle</p>
                 </q-card-section>
               </q-card>
@@ -243,7 +243,7 @@
               <q-card class="bg-grey-8">
                 <q-card-section>
                   <div class="text-h6 q-mb-md">🇫🇷 Français</div>
-                  <q-linear-progress value="0.95" color="positive" size="15px" />
+                  <q-linear-progress :value="0.95" color="positive" size="15px" />
                   <p class="text-caption q-mt-sm">Deuxième langue</p>
                 </q-card-section>
               </q-card>
@@ -252,7 +252,7 @@
               <q-card class="bg-grey-8">
                 <q-card-section>
                   <div class="text-h6 q-mb-md">🇬🇧 Anglais</div>
-                  <q-linear-progress value="0.65" color="positive" size="15px" />
+                  <q-linear-progress :value="0.65" color="positive" size="15px" />
                   <p class="text-caption q-mt-sm">Niveau intermédiaire</p>
                 </q-card-section>
               </q-card>
@@ -352,11 +352,14 @@
               >
             </p>
           </div>
-          <q-form>
+          <div v-if="sentMessage" class="q-mb-md">
+            <div class="q-pa-sm bg-positive text-white text-center rounded">{{ sentMessage }}</div>
+          </div>
+          <q-form @submit.prevent="sendMail">
             <q-input v-model="name" label="Nom" />
             <q-input v-model="email" label="Email" type="email" />
             <q-input v-model="message" label="Message" type="textarea" />
-            <q-btn color="primary" label="Envoyer" />
+            <q-btn type="submit" color="primary" label="Envoyer" />
           </q-form>
         </div>
       </div>
@@ -365,11 +368,76 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { useQuasar } from 'quasar'
+import emailjs from '@emailjs/browser'
+
+// Read EmailJS config from Vite env (create .env with VITE_ variables)
+const EMAILJS_SERVICE = import.meta.env.VITE_EMAILJS_SERVICE_ID || 'SERVICE_ID'
+const EMAILJS_TEMPLATE = import.meta.env.VITE_EMAILJS_TEMPLATE_ID || 'TEMPLATE_ID'
+const EMAILJS_PUBLIC = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || 'PUBLIC_KEY'
+
+// initialize EmailJS with public key (if provided)
+emailjs.init(EMAILJS_PUBLIC)
+
+const isValidKey = (v) =>
+  !!v &&
+  !v.includes('SERVICE_ID') &&
+  !v.includes('TEMPLATE_ID') &&
+  !v.includes('PUBLIC_KEY') &&
+  !v.startsWith('your')
+const EMAILJS_CONFIGURED =
+  isValidKey(EMAILJS_SERVICE) && isValidKey(EMAILJS_TEMPLATE) && isValidKey(EMAILJS_PUBLIC)
+
+onMounted(() => {
+  if (!EMAILJS_CONFIGURED) {
+    $q.notify({
+      type: 'warning',
+      message:
+        "EmailJS non configuré. Complétez .env (VITE_EMAILJS_...) pour activer l'envoi direct. Le fallback mailto sera utilisé.",
+    })
+  }
+})
+
+const $q = useQuasar()
 
 const name = ref('')
 const email = ref('')
 const message = ref('')
+const sentMessage = ref('')
+
+const sendMail = async () => {
+  try {
+    await emailjs.send(
+      import.meta.env.VITE_EMAILJS_SERVICE_ID,
+      import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+      {
+        name: name.value,
+        email: email.value,
+        message: message.value,
+      },
+      import.meta.env.VITE_EMAILJS_PUBLIC_KEY,
+    )
+
+    $q.notify({
+      type: 'positive',
+      message: 'Message envoyé avec succès !',
+    })
+
+    name.value = ''
+    email.value = ''
+    message.value = ''
+    sentMessage.value = 'Message envoyé avec succès !'
+    setTimeout(() => (sentMessage.value = ''), 4000)
+  } catch (error) {
+    console.error(error)
+
+    $q.notify({
+      type: 'negative',
+      message: "Erreur lors de l'envoi du message.",
+    })
+  }
+}
 
 const scrollToSection = (sectionId) => {
   const element = document.getElementById(sectionId)
