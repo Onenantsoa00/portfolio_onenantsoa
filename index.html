@@ -1,19 +1,60 @@
 <!doctype html>
-<html>
+<html lang="fr" data-theme="light">
   <head>
-    <title>Onenantsoa</title>
+    <title>Onenantsoa Ranaivo — Développeur web junior</title>
 
     <meta charset="utf-8" />
-    <meta name="description" content="Portfolio de Onenantsoa" />
+    <meta
+      name="description"
+      content="Portfolio de Ranaivo Andry Ny Avo Onenantsoa, développeur web junior à Antananarivo. Applications web et mobiles avec Vue.js, Node.js et PostgreSQL."
+    />
+    <meta name="author" content="Ranaivo Andry Ny Avo Onenantsoa" />
     <meta name="format-detection" content="telephone=no" />
     <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f3f3f8" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#070810" />
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1<% if (ctx.mode.cordova || ctx.mode.capacitor) { %>, viewport-fit=cover<% } %>"
     />
 
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Onenantsoa Ranaivo — Développeur web junior" />
+    <meta
+      property="og:description"
+      content="Applications web et mobiles avec Vue.js, Node.js et PostgreSQL. Portfolio de Ranaivo Andry Ny Avo Onenantsoa."
+    />
+    <meta property="og:image" content="/images/profile.jpeg" />
+    <meta name="twitter:card" content="summary_large_image" />
+
     <link rel="icon" type="image/png" href="/images/logo.png" />
     <link rel="apple-touch-icon" href="/images/logo.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+
+    <script>
+      // Apply the saved appearance before first paint so the page never flashes.
+      ;(function () {
+        try {
+          var preference = localStorage.getItem('site_theme') || 'system'
+          var dark =
+            preference === 'dark' ||
+            (preference === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)
+          var root = document.documentElement
+          root.dataset.theme = dark ? 'dark' : 'light'
+          root.style.colorScheme = dark ? 'dark' : 'light'
+          var language = localStorage.getItem('site_language')
+          if (language) root.lang = language
+        } catch (error) {
+          /* private mode: keep the defaults */
+        }
+      })()
+    </script>
   </head>
   <body>
     <!-- quasar:entry-point -->

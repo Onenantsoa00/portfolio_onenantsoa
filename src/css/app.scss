@@ -1,1 +1,243 @@
-// app global css
+// Global design tokens and shared layout primitives.
+// One accent, hairline rules and a two-step surface scale, in light and dark.
+
+:root {
+  --font-sans: 'Sora', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+
+  --ground: #f3f3f8;
+  --surface: #ffffff;
+  --surface-soft: #ececf4;
+  --ink: #0b0e1a;
+  --ink-soft: #2c3244;
+  --muted: #5c6478;
+  --line: rgba(11, 14, 26, 0.1);
+  --line-strong: rgba(11, 14, 26, 0.2);
+
+  --accent: #4a44d8;
+  --accent-ink: #ffffff;
+  --accent-2: #0e93ab;
+  --accent-wash: rgba(74, 68, 216, 0.08);
+  --header-bg: rgba(243, 243, 248, 0.76);
+  --shadow-card: 0 1px 2px rgba(11, 14, 26, 0.04), 0 24px 52px -34px rgba(11, 14, 26, 0.45);
+
+  --radius-lg: 22px;
+  --radius-md: 14px;
+  --radius-sm: 10px;
+  --max: 1180px;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html[data-theme='dark'] {
+  --ground: #070810;
+  --surface: #0e1019;
+  --surface-soft: #151824;
+  --ink: #f1f3ff;
+  --ink-soft: #d2d7ea;
+  --muted: #98a0b8;
+  --line: rgba(255, 255, 255, 0.1);
+  --line-strong: rgba(255, 255, 255, 0.22);
+
+  --accent: #8f8dff;
+  --accent-ink: #08080f;
+  --accent-2: #46dbe8;
+  --accent-wash: rgba(143, 141, 255, 0.12);
+  --header-bg: rgba(7, 8, 16, 0.72);
+  --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.03), 0 30px 64px -40px rgba(0, 0, 0, 0.95);
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 84px;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--ground);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  transition:
+    background-color 320ms ease,
+    color 320ms ease;
+}
+
+body.body--dark {
+  background: var(--ground);
+  color: var(--ink);
+}
+
+#q-app,
+.q-page-container,
+.q-page {
+  background: transparent;
+}
+
+// Content sits above the animated backdrop
+.q-page-container {
+  position: relative;
+  z-index: 1;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin: 0;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+p {
+  margin: 0;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+// Layout primitives
+.container {
+  width: 100%;
+  max-width: var(--max);
+  margin-inline: auto;
+  padding-inline: clamp(20px, 5vw, 44px);
+}
+
+.section {
+  position: relative;
+  padding-block: clamp(60px, 8vw, 112px);
+}
+
+.display {
+  font-size: clamp(2.3rem, 5.8vw, 4.3rem);
+  line-height: 1.03;
+  letter-spacing: -0.04em;
+  font-weight: 600;
+}
+
+.lead {
+  font-size: clamp(1rem, 1.35vw, 1.12rem);
+  line-height: 1.65;
+  color: var(--ink-soft);
+  max-width: 58ch;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.mono-label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+}
+
+.hairline {
+  border: 0;
+  border-top: 1px solid var(--line);
+  margin: 0;
+}
+
+.link-underline {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--ink);
+  text-decoration: none;
+  font-weight: 500;
+  border-bottom: 1px solid var(--line-strong);
+  padding-bottom: 2px;
+  transition:
+    color 200ms ease,
+    border-color 200ms ease;
+}
+
+.link-underline:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+// Scroll reveal, driven by the Reveal component
+.reveal {
+  opacity: 0;
+  transform: translate3d(0, var(--reveal-distance, 24px), 0);
+  transition:
+    opacity 700ms var(--ease) var(--reveal-delay, 0ms),
+    transform 700ms var(--ease) var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+// Small technical list used for stacks and tags
+.tech-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tech-list li {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  padding: 4px 10px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--muted);
+}
+
+// Scrollbar
+* {
+  scrollbar-color: var(--line-strong) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--line-strong);
+  border-radius: 999px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
